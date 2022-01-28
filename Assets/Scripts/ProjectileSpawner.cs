@@ -3,21 +3,28 @@ using System.Collections;
 using UnityEngine;
 
 [Serializable]
-public class ProjectileSlot
+public class ProjectileSpawnChances
 {
-    [SerializeField] ProjectileType projectileType = ProjectileType.Arrow;
-    [SerializeField] GameObject[] projectilePrefabs = null;
+    [SerializeField] ProjectileType projectileType = ProjectileType.Regular;
+    [SerializeField] Vector2 chances = Vector2.zero;
 
     public ProjectileType GetProjectileType()
     {
         return projectileType;
     }
+
+    public Vector2 GetChances()
+    {
+        return chances;
+    }
 }
 
 public class ProjectileSpawner : MonoBehaviour
 {
-    [SerializeField] GameObject projectilePrefab = null;
+    [SerializeField] ProjectileSpawnChances[] projectileSpawnChances = null;
     [SerializeField] float timeBetweenProjectiles = 2f;
+
+    ProjectilePool projectilePool = null;
 
     bool canSpawnProjectiles = true;
 
@@ -26,9 +33,8 @@ public class ProjectileSpawner : MonoBehaviour
 
     private void Awake()
     {
-        Shield shield = FindObjectOfType<Shield>();
-        minYClamp = shield.GetMinYClamp();
-        maxYClamp = shield.GetMaxYClamp();
+        projectilePool = GetComponent<ProjectilePool>();
+        SetLauncherClamps();
     }
 
     private void Update()
@@ -36,18 +42,22 @@ public class ProjectileSpawner : MonoBehaviour
         if (canSpawnProjectiles)
         {
             canSpawnProjectiles = false;
-            StartCoroutine(SpawnProjectile());
+            StartCoroutine(LaunchProjectile());
         }
     }
 
-    private IEnumerator SpawnProjectile()
+    private IEnumerator LaunchProjectile()
     {
         SetRandomYPosition();
 
-        GameObject projectileInstance = Instantiate(projectilePrefab, transform.position, transform.rotation);
-        Projectile projectile = projectileInstance.GetComponent<Projectile>();
+        ProjectileType randomProjectileType = GetRandomProjectileType();
+        Projectile newProjectile = projectilePool.GetInactiveProjectile(randomProjectileType);
+        newProjectile.gameObject.SetActive(true);
 
-        projectile.LaunchProjectile();
+        newProjectile.transform.position = transform.position;
+        newProjectile.transform.rotation = transform.rotation;
+
+        newProjectile.SetIsActive(true);
 
         yield return new WaitForSeconds(timeBetweenProjectiles);
         canSpawnProjectiles = true;
@@ -58,5 +68,29 @@ public class ProjectileSpawner : MonoBehaviour
         float randomYPosition = UnityEngine.Random.Range(minYClamp, maxYClamp);
         Vector3 newPosition = new Vector3(transform.position.x, randomYPosition, transform.position.z);
         transform.position = newPosition;
+    }
+
+    private void SetLauncherClamps()
+    {
+        Shield shield = FindObjectOfType<Shield>();
+        minYClamp = shield.GetMinYClamp();
+        maxYClamp = shield.GetMaxYClamp();
+    }
+
+    private ProjectileType GetRandomProjectileType()
+    {
+        int randomInt = UnityEngine.Random.Range(0, 100);
+
+        foreach(ProjectileSpawnChances projectileSpawnChance in projectileSpawnChances)
+        {
+            Vector2 chances = projectileSpawnChance.GetChances();
+
+            if(chances.x < randomInt && randomInt < chances.y)
+            {
+                return projectileSpawnChance.GetProjectileType();
+            }
+        }
+
+        return ProjectileType.Regular;
     }
 }

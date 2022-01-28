@@ -27,7 +27,9 @@ public class Player : MonoBehaviour
     private void OnShieldHit(Projectile projectile)
     {
         AddPoints(projectile.GetPointsReward());
-        Destroy(projectile.gameObject);
+
+        projectile.SetIsActive(false);
+        projectile.gameObject.SetActive(false);
     }
 
     public void DamageHealth(float damageAmount)
@@ -57,6 +59,8 @@ public class Player : MonoBehaviour
 
         SubtractPoints(projectile.GetPointsReward());
         DamageHealth(projectile.GetDamageAmount());
-        Destroy(projectile.gameObject);
+
+        projectile.SetIsActive(false);
+        projectile.gameObject.SetActive(false);
     }
 }

@@ -1,22 +1,20 @@
 using UnityEngine;
 
-public enum ProjectileType { Arrow, Wealth, Health }
-public enum ProjectileRarity { Common, Uncommon, Rare }
+public enum ProjectileType { Light, Regular, Heavy }
 
-public abstract class Projectile : MonoBehaviour
+public class Projectile : MonoBehaviour
 {
-    [SerializeField] ProjectileType projectileType = ProjectileType.Arrow;
-    [SerializeField] ProjectileRarity projectileRarity = ProjectileRarity.Common;
-
+    [SerializeField] ProjectileType projectileType = ProjectileType.Light;
+    
     [SerializeField] float projectileSpeed = 10f;
     [SerializeField] int pointsReward = 1;
     [SerializeField] float damage = 20f;
 
-    bool canMove = false;
+    bool isActive = false;
 
     private void Update()
     {
-        if (canMove)
+        if (isActive)
         {
             MoveForward();
         }
@@ -27,19 +25,19 @@ public abstract class Projectile : MonoBehaviour
         transform.Translate(Vector3.forward * projectileSpeed * Time.deltaTime);
     }
 
-    public void LaunchProjectile()
+    public void SetIsActive(bool shouldActivate)
     {
-        canMove = true;
+        isActive = shouldActivate;
+    }
+
+    public bool IsActive()
+    {
+        return isActive;
     }
 
     public ProjectileType GetProjectileType()
     {
         return projectileType;
-    }
-
-    public ProjectileRarity GetProjectileRarity()
-    {
-        return projectileRarity;
     }
 
     public int GetPointsReward()

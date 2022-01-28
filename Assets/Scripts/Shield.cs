@@ -3,12 +3,18 @@ using UnityEngine;
 
 public class Shield : MonoBehaviour
 {
+    [SerializeField] Vector3 startPosition = Vector3.zero;
     [SerializeField] float moveSpeed = 5f;
 
     [SerializeField] float minYClamp = 0f;
     [SerializeField] float maxYClamp = 0f;
 
     public event Action<Projectile> onProjectileHit;
+
+    private void Start()
+    {
+        transform.position = startPosition;
+    }
 
     private void Update()
     {
