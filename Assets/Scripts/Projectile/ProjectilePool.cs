@@ -4,8 +4,7 @@ using UnityEngine;
 [System.Serializable]
 public class ProjectileSlot
 {
-    [SerializeField] ProjectileType projectileType = ProjectileType.Regular;
-
+    [SerializeField] ProjectileType projectileType = ProjectileType.rArrow;
     [SerializeField] int amountToCreate = 10;
     [SerializeField] GameObject projectilePrefab = null;
 
@@ -56,7 +55,7 @@ public class ProjectilePool : MonoBehaviour
         }
     }
 
-    public Projectile GetInactiveProjectile(ProjectileType projectileType)
+    public Projectile GetProjectile(ProjectileType projectileType)
     {
         List<Projectile> projectileList = GetProjectileList(projectileType);
 

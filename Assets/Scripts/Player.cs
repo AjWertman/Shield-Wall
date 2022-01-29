@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -32,7 +33,7 @@ public class Player : MonoBehaviour
         projectile.gameObject.SetActive(false);
     }
 
-    public void DamageHealth(float damageAmount)
+    private void DamageHealth(float damageAmount)
     {
         castleHealth -= damageAmount;
         castleHealth = Mathf.Clamp(castleHealth, 0f, 100f);
@@ -41,6 +42,12 @@ public class Player : MonoBehaviour
         {
             Die();
         }
+    }
+
+    private void RestoreHealth(float restoreAmount)
+    {
+        castleHealth += restoreAmount;
+        castleHealth = Mathf.Clamp(castleHealth, 0f, 100f);
     }
 
     private void Die()
@@ -57,10 +64,34 @@ public class Player : MonoBehaviour
         Projectile projectile = other.GetComponent<Projectile>();
         if (projectile == null) return;
 
-        SubtractPoints(projectile.GetPointsReward());
-        DamageHealth(projectile.GetDamageAmount());
+        ProjectileTriggerBehavior(projectile);
 
         projectile.SetIsActive(false);
         projectile.gameObject.SetActive(false);
+    }
+
+    private void ProjectileTriggerBehavior(Projectile projectile)
+    {
+        if (IsArrow(projectile)) 
+        {
+            DamageHealth(projectile.GetDamageAmount());
+        }
+        else if(projectile.GetProjectileType() == ProjectileType.Health)
+        {
+            RestoreHealth(projectile.GetDamageAmount());
+        }
+        else if(projectile.GetProjectileType() == ProjectileType.Wealth)
+        {
+            AddPoints(projectile.GetPointsReward());
+        }
+    }
+
+    private bool IsArrow(Projectile projectile)
+    {
+        ProjectileType type = projectile.GetProjectileType();
+        if (type == ProjectileType.lArrow) return true;
+        else if (type == ProjectileType.rArrow) return true;
+        else if (type == ProjectileType.hArrow) return true;
+        else return false;
     }
 }

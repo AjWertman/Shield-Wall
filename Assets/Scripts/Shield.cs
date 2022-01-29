@@ -4,10 +4,9 @@ using UnityEngine;
 public class Shield : MonoBehaviour
 {
     [SerializeField] Vector3 startPosition = Vector3.zero;
-    [SerializeField] float moveSpeed = 5f;
+    [SerializeField] Vector2 yClamps = Vector2.zero;
 
-    [SerializeField] float minYClamp = 0f;
-    [SerializeField] float maxYClamp = 0f;
+    [SerializeField] float moveSpeed = 5f;
 
     public event Action<Projectile> onProjectileHit;
 
@@ -34,7 +33,7 @@ public class Shield : MonoBehaviour
 
         Vector3 newPosition = transform.position;
 
-        newPosition.y = Mathf.Clamp(newPosition.y, minYClamp, maxYClamp);
+        newPosition.y = Mathf.Clamp(newPosition.y, GetMinYClamp(), GetMaxYClamp());
         transform.position = newPosition;
     }
 
@@ -48,10 +47,10 @@ public class Shield : MonoBehaviour
 
     public float GetMinYClamp()
     {
-        return minYClamp;
+        return yClamps.x;
     }
     public float GetMaxYClamp()
     {
-        return maxYClamp;
+        return yClamps.y;
     }
 }

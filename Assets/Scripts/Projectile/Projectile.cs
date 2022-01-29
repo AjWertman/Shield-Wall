@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public enum ProjectileType { Light, Regular, Heavy }
+public enum ProjectileType { lArrow, rArrow, hArrow, Health, Wealth }
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] ProjectileType projectileType = ProjectileType.Light;
+    [SerializeField] ProjectileType projectileType = ProjectileType.rArrow;
     
     [SerializeField] float projectileSpeed = 10f;
     [SerializeField] int pointsReward = 1;
@@ -30,14 +30,14 @@ public class Projectile : MonoBehaviour
         isActive = shouldActivate;
     }
 
-    public bool IsActive()
-    {
-        return isActive;
-    }
-
     public ProjectileType GetProjectileType()
     {
         return projectileType;
+    }
+
+    public bool IsActive()
+    {
+        return isActive;
     }
 
     public int GetPointsReward()

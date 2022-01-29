@@ -5,7 +5,7 @@ using UnityEngine;
 [Serializable]
 public class ProjectileSpawnChances
 {
-    [SerializeField] ProjectileType projectileType = ProjectileType.Regular;
+    [SerializeField] ProjectileType projectileType = ProjectileType.rArrow;
     [SerializeField] Vector2 chances = Vector2.zero;
 
     public ProjectileType GetProjectileType()
@@ -51,7 +51,7 @@ public class ProjectileSpawner : MonoBehaviour
         SetRandomYPosition();
 
         ProjectileType randomProjectileType = GetRandomProjectileType();
-        Projectile newProjectile = projectilePool.GetInactiveProjectile(randomProjectileType);
+        Projectile newProjectile = projectilePool.GetProjectile(randomProjectileType);
         newProjectile.gameObject.SetActive(true);
 
         newProjectile.transform.position = transform.position;
@@ -79,18 +79,18 @@ public class ProjectileSpawner : MonoBehaviour
 
     private ProjectileType GetRandomProjectileType()
     {
-        int randomInt = UnityEngine.Random.Range(0, 100);
+        int randomArrowInt = UnityEngine.Random.Range(0, 100);
 
         foreach(ProjectileSpawnChances projectileSpawnChance in projectileSpawnChances)
         {
             Vector2 chances = projectileSpawnChance.GetChances();
 
-            if(chances.x < randomInt && randomInt < chances.y)
+            if(chances.x < randomArrowInt && randomArrowInt < chances.y)
             {
                 return projectileSpawnChance.GetProjectileType();
             }
         }
 
-        return ProjectileType.Regular;
+        return ProjectileType.rArrow;
     }
 }
