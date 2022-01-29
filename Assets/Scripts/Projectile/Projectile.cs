@@ -49,4 +49,12 @@ public class Projectile : MonoBehaviour
     {
         return damage;
     }
+
+    public bool IsArrow()
+    {
+        if (projectileType == ProjectileType.lArrow) return true;
+        else if (projectileType == ProjectileType.rArrow) return true;
+        else if (projectileType == ProjectileType.hArrow) return true;
+        else return false;
+    }
 }
