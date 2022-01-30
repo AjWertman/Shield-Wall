@@ -29,7 +29,10 @@ public class Player : MonoBehaviour
 
     private void OnShieldHit(Projectile projectile)
     {
-        points.AddPoints(projectile.GetPointsReward());
+        if (projectile.IsArrow())
+        {
+            points.AddPoints(projectile.GetPointsReward());
+        }
 
         projectile.SetIsActive(false);
         projectile.gameObject.SetActive(false);
@@ -47,25 +50,27 @@ public class Player : MonoBehaviour
     public void Upgrade(UpgradeType upgradeType)
     {
         bool isMaxLevel = false;
-        int pointCost = int.MaxValue;
+        float pointCost = 0f;
    
         if(upgradeType == UpgradeType.Health)
         {
+            pointCost = health.GetNextLevelCost();
             health.Upgrade();
             isMaxLevel = health.IsMaxLevel();
-            pointCost = health.GetNextLevelCost();
+
         }
         else if (upgradeType == UpgradeType.PointsMultiplier)
         {
+            pointCost = points.GetNextLevelCost();
             points.UpgradeMultiplier();
             isMaxLevel = points.IsMaxLevel();
-            pointCost = points.GetNextLevelCost();
+            
         }
         else if (upgradeType == UpgradeType.Shield)
         {
-            shield.Upgrade();
-            isMaxLevel = shield.IsMaxLevel();
             pointCost = shield.GetNextLevelCost();
+            shield.Upgrade();
+            isMaxLevel = shield.IsMaxLevel();         
         }
 
         points.SubtractPoints(pointCost);
@@ -75,8 +80,8 @@ public class Player : MonoBehaviour
 
     public bool CanAffordUpgrade(UpgradeType upgradeType)
     {
-        int currentPoints = points.GetPlayerPoints();
-        int pointsForNextUpgrade = int.MaxValue;
+        float currentPoints = points.GetPlayerPoints();
+        float pointsForNextUpgrade = Mathf.Infinity;
 
         if (upgradeType == UpgradeType.Health)
         {
@@ -91,9 +96,9 @@ public class Player : MonoBehaviour
             pointsForNextUpgrade = shield.GetNextLevelCost();
         }
 
-        bool cantAfford = currentPoints < pointsForNextUpgrade;
+        bool canAfford = currentPoints > pointsForNextUpgrade;
 
-        return !cantAfford;
+        return canAfford;
     }
 
     private void OnTriggerEnter(Collider other)

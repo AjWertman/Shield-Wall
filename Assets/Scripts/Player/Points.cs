@@ -31,7 +31,7 @@ public class Points : MonoBehaviour
     [SerializeField] int currentLevel = -1;
     int maxLevel = 0;
 
-    [SerializeField] int playerPoints = 0;
+    [SerializeField] float playerPoints = 0;
     [SerializeField] float pointMultiplier = 1.0f;
 
     public event Action onPointsChange;
@@ -46,23 +46,18 @@ public class Points : MonoBehaviour
         pointMultiplier = pointMultiplierProgressions[0].GetPointMultiplier();
     }
 
-    public void AddPoints(int pointsToAdd)
+    public void AddPoints(float pointsToAdd)
     {
         float adjustedPoints = pointsToAdd * pointMultiplier;
-        playerPoints += (int)adjustedPoints;
+        playerPoints += adjustedPoints;
 
         onPointsChange();
     }
 
-    public void SubtractPoints(int pointsToSubtract)
+    public void SubtractPoints(float pointsToSubtract)
     {
-        if (pointsToSubtract > playerPoints)
-        {
-            //Not enough points
-        }
-
         playerPoints -= pointsToSubtract;
-        playerPoints = Mathf.Clamp(playerPoints, 0, int.MaxValue);
+        playerPoints = Mathf.Clamp(playerPoints, 0, Mathf.Infinity);
 
         onPointsChange();
     }
@@ -79,9 +74,7 @@ public class Points : MonoBehaviour
 
     public int GetNextLevelCost()
     {
-        PointMultiplierProgression nextProgression = GetProgression(currentLevel);
-
-        return nextProgression.GetNextLevelCost();
+        return GetProgression(currentLevel).GetNextLevelCost();
     }
 
     public bool IsMaxLevel()
@@ -89,7 +82,7 @@ public class Points : MonoBehaviour
         return currentLevel == maxLevel;
     }
 
-    public int GetPlayerPoints()
+    public float GetPlayerPoints()
     {
         return playerPoints;
     }

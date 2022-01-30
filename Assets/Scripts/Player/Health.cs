@@ -19,7 +19,7 @@ public class HealthProgression
         return nextLevelCost;
     }
 
-    public float GetHealth()
+    public float GetMaxHealth()
     {
         return health;
     }
@@ -33,17 +33,16 @@ public class Health : MonoBehaviour
     int maxLevel = 0;
 
     [SerializeField] float castleHealth = 100f;
+    [SerializeField] float maxHealth = 100f;
 
+    public event Action onHealthChange;
     public event Action onDeath;
 
     private void Awake()
     {
         maxLevel = healthProgressions.Length - 1;
-    }
-
-    private void Start()
-    {
-        castleHealth = healthProgressions[0].GetHealth();
+        maxHealth = healthProgressions[0].GetMaxHealth();
+        castleHealth = maxHealth;
     }
 
     public void DamageHealth(float damageAmount)
@@ -54,13 +53,18 @@ public class Health : MonoBehaviour
         if (castleHealth == 0)
         {
             onDeath();
+            return;
         }
+
+        onHealthChange();
     }
 
     public void RestoreHealth(float restoreAmount)
     {
         castleHealth += restoreAmount;
-        castleHealth = Mathf.Clamp(castleHealth, 0f, 100f);
+        castleHealth = Mathf.Clamp(castleHealth, 0f, maxHealth);
+
+        onHealthChange();
     }
 
     public void Upgrade()
@@ -70,7 +74,7 @@ public class Health : MonoBehaviour
 
         HealthProgression currentProgression = GetProgression(currentLevel);
         
-        castleHealth = currentProgression.GetHealth();
+        maxHealth = currentProgression.GetMaxHealth();
     }
 
     public bool IsMaxLevel()
@@ -83,6 +87,21 @@ public class Health : MonoBehaviour
         HealthProgression nextProgression = GetProgression(currentLevel);
 
         return nextProgression.GetNextLevelCost();
+    }
+
+    public float GetHealth()
+    {
+        return castleHealth;
+    }
+
+    public float GetMaxHealth()
+    {
+        return maxHealth;
+    }
+
+    public float GetHealthPercentage()
+    {
+        return castleHealth / maxHealth;
     }
 
     public HealthProgression GetProgression(int level)

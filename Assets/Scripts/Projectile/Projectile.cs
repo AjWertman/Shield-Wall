@@ -7,7 +7,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] ProjectileType projectileType = ProjectileType.rArrow;
     
     [SerializeField] float projectileSpeed = 10f;
-    [SerializeField] int pointsReward = 1;
+    [SerializeField] float pointsReward = 1;
     [SerializeField] float damage = 20f;
 
     bool isActive = false;
@@ -40,7 +40,7 @@ public class Projectile : MonoBehaviour
         return isActive;
     }
 
-    public int GetPointsReward()
+    public float GetPointsReward()
     {
         return pointsReward;
     }

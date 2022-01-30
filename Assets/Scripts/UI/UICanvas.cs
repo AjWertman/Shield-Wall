@@ -1,14 +1,23 @@
-using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UICanvas : MonoBehaviour
 {
+    [SerializeField] TextMeshProUGUI healthText = null;
+    [SerializeField] Slider healthSlider = null;
+
+    [SerializeField] TextMeshProUGUI pointsText = null;
+
     [SerializeField] UpgradeButton healthButton = null;
     [SerializeField] UpgradeButton shieldButton = null;
     [SerializeField] UpgradeButton pointsButton = null;
+    [SerializeField] TextMeshProUGUI pointMultiplierText = null;
 
     Player player = null;
+    Health playerHealth = null;
+    Points playerPoints = null;
 
     private void Awake()
     {
@@ -18,10 +27,23 @@ public class UICanvas : MonoBehaviour
 
     private void Start()
     {
+        playerHealth = player.GetHealth();
+        playerPoints = player.GetPoints();
+
         InitializeUpgradeButtons();
 
-        player.GetPoints().onPointsChange += UpdatePointsUI;
+        playerHealth.onHealthChange += UpdateHealthUI;
+
+        playerPoints.onPointsChange += UpdatePointsUI;
+        playerPoints.onPointsChange += UpdateUpgradeButtons;
+        UpdateUpgradeButtons();
         UpdatePointsUI();
+    }
+
+    private void UpdateHealthUI()
+    {
+        healthText.text = playerHealth.GetHealth() + "/" + playerHealth.GetMaxHealth();
+        healthSlider.value = playerHealth.GetHealthPercentage();
     }
 
     private void InitializeUpgradeButtons()
@@ -30,13 +52,8 @@ public class UICanvas : MonoBehaviour
         {
             upgradeButton.GetButton().onClick.AddListener(() => player.Upgrade(upgradeButton.GetUpgradeType()));
             upgradeButton.GetButton().onClick.AddListener(() => UpdateUpgradeButtons());
+            upgradeButton.GetButton().onClick.AddListener(() => UpdatePointsUI());
         }
-    }
-
-    private void UpdatePointsUI()
-    {
-        UpdateUpgradeButtons();
-        //Points ui.text = newamount
     }
 
     private void UpdateUpgradeButtons()
@@ -44,20 +61,30 @@ public class UICanvas : MonoBehaviour
         foreach(UpgradeButton upgradeButton in GetUpgradeButtons())
         {
             upgradeButton.GetButton().interactable = false;
+            upgradeButton.SetToActive(false);
         }
 
         if (player.CanAffordUpgrade(UpgradeType.Health))
         {
             healthButton.GetButton().interactable = true;
+            healthButton.SetToActive(true);
         }
         if (player.CanAffordUpgrade(UpgradeType.PointsMultiplier))
         {
             pointsButton.GetButton().interactable = true;
+            pointsButton.SetToActive(true);
         }
         if (player.CanAffordUpgrade(UpgradeType.Shield))
         {
             shieldButton.GetButton().interactable = true;
+            shieldButton.SetToActive(true);
         }
+    }
+
+    private void UpdatePointsUI()
+    {
+        pointsText.text = playerPoints.GetPlayerPoints().ToString("F0") + "g";
+        pointMultiplierText.text = playerPoints.GetPointMultiplier().ToString() + "x";
     }
 
     public UpgradeButton GetUpgradeButton(UpgradeType upgradeType)

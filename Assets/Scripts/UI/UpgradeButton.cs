@@ -9,10 +9,24 @@ public class UpgradeButton : MonoBehaviour
     [SerializeField] UpgradeType upgradeType = UpgradeType.Health;
 
     Button button = null;
+    CanvasGroup canvasGroup = null;
 
     private void Awake()
     {
         button = GetComponent<Button>();
+        canvasGroup = GetComponent<CanvasGroup>();
+    }
+
+    public void SetToActive(bool shouldSet)
+    {
+        if (shouldSet)
+        {
+            canvasGroup.alpha = 1;
+        }
+        else
+        {
+            canvasGroup.alpha = .5f;
+        }
     }
 
     public UpgradeType GetUpgradeType()
