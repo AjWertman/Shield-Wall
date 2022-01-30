@@ -48,15 +48,14 @@ public class Health : MonoBehaviour
     public void DamageHealth(float damageAmount)
     {
         castleHealth -= damageAmount;
-        castleHealth = Mathf.Clamp(castleHealth, 0f, 100f);
+        castleHealth = Mathf.Clamp(castleHealth, 0f, maxHealth);
+
+        onHealthChange();
 
         if (castleHealth == 0)
         {
             onDeath();
-            return;
         }
-
-        onHealthChange();
     }
 
     public void RestoreHealth(float restoreAmount)

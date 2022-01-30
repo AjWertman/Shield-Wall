@@ -36,14 +36,10 @@ public class UICanvas : MonoBehaviour
 
         playerPoints.onPointsChange += UpdatePointsUI;
         playerPoints.onPointsChange += UpdateUpgradeButtons;
+
+        UpdateHealthUI();
         UpdateUpgradeButtons();
         UpdatePointsUI();
-    }
-
-    private void UpdateHealthUI()
-    {
-        healthText.text = playerHealth.GetHealth() + "/" + playerHealth.GetMaxHealth();
-        healthSlider.value = playerHealth.GetHealthPercentage();
     }
 
     private void InitializeUpgradeButtons()
@@ -54,6 +50,12 @@ public class UICanvas : MonoBehaviour
             upgradeButton.GetButton().onClick.AddListener(() => UpdateUpgradeButtons());
             upgradeButton.GetButton().onClick.AddListener(() => UpdatePointsUI());
         }
+    }
+
+    private void UpdateHealthUI()
+    {
+        healthText.text = playerHealth.GetHealth() + "/" + playerHealth.GetMaxHealth();
+        healthSlider.value = playerHealth.GetHealthPercentage();
     }
 
     private void UpdateUpgradeButtons()

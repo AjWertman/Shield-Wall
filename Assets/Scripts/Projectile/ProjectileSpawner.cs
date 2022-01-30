@@ -3,6 +3,23 @@ using System.Collections;
 using UnityEngine;
 
 [Serializable]
+public class ProjectilesSpawnProgression
+{
+    [SerializeField] int level = 0;
+    [SerializeField] float timeBetweenProjectiles = 2f;
+
+    public int GetLevel()
+    {
+        return level;
+    }
+
+    public float GetTimeBetweenProjectiles()
+    {
+        return timeBetweenProjectiles;
+    }
+}
+
+[Serializable]
 public class ProjectileSpawnChances
 {
     [SerializeField] ProjectileType projectileType = ProjectileType.rArrow;
@@ -21,6 +38,7 @@ public class ProjectileSpawnChances
 
 public class ProjectileSpawner : MonoBehaviour
 {
+    [SerializeField] ProjectilesSpawnProgression[] projectilesSpawnProgressions = null;
     [SerializeField] ProjectileSpawnChances[] projectileSpawnChances = null;
     [SerializeField] float timeBetweenProjectiles = 2f;
 
@@ -31,10 +49,16 @@ public class ProjectileSpawner : MonoBehaviour
     float minYClamp = 0f;
     float maxYClamp = 0f;
 
+    int level = 0;
+    int maxLevel = 0;
+
     private void Awake()
     {
         projectilePool = GetComponent<ProjectilePool>();
         SetLauncherClamps();
+
+        maxLevel = projectilesSpawnProgressions.Length - 1;
+        timeBetweenProjectiles = projectilesSpawnProgressions[0].GetTimeBetweenProjectiles();
     }
 
     private void Update()
@@ -43,6 +67,11 @@ public class ProjectileSpawner : MonoBehaviour
         {
             canSpawnProjectiles = false;
             StartCoroutine(LaunchProjectile());
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            AdvanceLevel();
         }
     }
 
@@ -61,6 +90,14 @@ public class ProjectileSpawner : MonoBehaviour
 
         yield return new WaitForSeconds(timeBetweenProjectiles);
         canSpawnProjectiles = true;
+    }
+
+    public void AdvanceLevel()
+    {
+        if (level + 1 > maxLevel) return;
+        level++;
+
+        timeBetweenProjectiles = projectilesSpawnProgressions[level].GetTimeBetweenProjectiles();
     }
 
     private void SetRandomYPosition()

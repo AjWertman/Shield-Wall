@@ -14,7 +14,7 @@ GameObject:
   m_Layer: 0
   m_Name: ProjectileSpawner
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -45,6 +45,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b94a845ea1ce974884b0a91f6907960, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectilesSpawnProgressions:
+  - level: 0
+    timeBetweenProjectiles: 2
+  - level: 1
+    timeBetweenProjectiles: 1.8
+  - level: 2
+    timeBetweenProjectiles: 1.5
+  - level: 3
+    timeBetweenProjectiles: 1.2
+  - level: 4
+    timeBetweenProjectiles: 0.4
   projectileSpawnChances:
   - projectileType: 0
     chances: {x: 0, y: 15}
@@ -56,7 +67,7 @@ MonoBehaviour:
     chances: {x: 80, y: 89}
   - projectileType: 4
     chances: {x: 90, y: 99}
-  timeBetweenProjectiles: 1
+  timeBetweenProjectiles: 1.2
 --- !u!114 &8861562888827138418
 MonoBehaviour:
   m_ObjectHideFlags: 0
