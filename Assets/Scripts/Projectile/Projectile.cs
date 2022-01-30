@@ -12,6 +12,13 @@ public class Projectile : MonoBehaviour
 
     bool isActive = false;
 
+    TrailRenderer trail = null;
+
+    private void Awake()
+    {
+        trail = GetComponentInChildren<TrailRenderer>();
+    }
+
     private void Update()
     {
         if (isActive)
@@ -28,6 +35,10 @@ public class Projectile : MonoBehaviour
     public void SetIsActive(bool shouldActivate)
     {
         isActive = shouldActivate;
+
+        if (trail == null) return;
+        trail.gameObject.SetActive(shouldActivate);
+        trail.Clear();
     }
 
     public ProjectileType GetProjectileType()
