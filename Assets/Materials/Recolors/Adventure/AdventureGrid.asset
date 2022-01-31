@@ -1,0 +1,96 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93e385b20f6cdf54f89b327c2248de7a, type: 3}
+  m_Name: AdventureGrid
+  m_EditorClassIdentifier: 
+  gridColorMode: 1
+  gridColor: {r: 1, g: 1, b: 1, a: 1}
+  gridsList:
+  - handlesPos: 1
+    vLinesOnCanvasGrid:
+    - 0
+    - 42.20117
+    - 83.041016
+    - 123.88086
+    - 166.08203
+    - 206.92188
+    - 247.76172
+    - 288.60156
+    - 330.80273
+    - 371.64258
+    - 412.48242
+    - 453.32227
+    - 495.52344
+    hLinesOnCanvasGrid:
+    - 396.14648
+    - 360.75195
+    - 323.9961
+    - 288.60156
+    - 260.01367
+    - 224.61914
+    - 187.86328
+    - 157.91406
+    - 125.24219
+    - 92.57031
+    - 59.898438
+    - 25.865234
+    - 0
+    tg: {fileID: 11400000}
+    gridOnCanvas:
+      serializedVersion: 2
+      x: 0
+      y: 159.27539
+      width: 495.52344
+      height: 396.14648
+    mouseInsideRectPos: {x: 789, y: 361}
+    gridColor:
+      serializedVersion: 2
+      rgba: 4294967295
+    gridLabel: Flat Color Grid
+    editGridName: 0
+    isSelected: 1
+    showGridOptions: 1
+    isSelectionLocked: 0
+    isHandleSelected: 0
+    isGridPosLocked: 0
+    isOverlapping: 0
+    handleID: -1
+    vLinesOnTexGrid: 000000001f0000003d0000005b0000007a00000098000000b6000000d4000000f3000000110100002f0100004d0100006c010000
+    hLinesOnTexGrid: 000000001a000000350000004f000000640000007e00000099000000af000000c7000000df000000f70000001001000023010000
+    tintColor:
+      serializedVersion: 2
+      rgba: 4294967295
+    emptySpaceColor:
+      serializedVersion: 2
+      rgba: 4294967295
+    gridPos: {x: 0, y: 104}
+    gridWidth: 364
+    gridHeight: 291
+    gridColumns: 12
+    gridRows: 12
+    hasEmptySpace: 0
+    isTexPattern: 0
+  copyList: []
+  texAtlas: {fileID: 2800000, guid: b8f889a91be35174bbbb38d1057b6493, type: 3}
+  originTexAtlas: {fileID: 0}
+  originOffset: {x: 537, y: 45}
+  sizeOffset: {x: 185, y: 185}
+  showShortcuts: 0
+  zoomSpeed: 80
+  handleSize: 10
+  canvasBorder: 50
+  panelDefaultWidth: 250
+  sidePanelWidth: 250
+  showPanel: 1
+  drawAxes: 1
+  drawGrid: 1
+  texAtlasSize: {x: 0, y: 0}

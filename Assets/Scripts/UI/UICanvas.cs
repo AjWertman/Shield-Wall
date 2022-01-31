@@ -5,14 +5,21 @@ using UnityEngine.UI;
 
 public class UICanvas : MonoBehaviour
 {
+    [SerializeField] GameObject hud = null;
     [SerializeField] TextMeshProUGUI healthText = null;
     [SerializeField] Slider healthSlider = null;
 
     [SerializeField] TextMeshProUGUI pointsText = null;
 
     [SerializeField] UpgradeButton healthButton = null;
+    [SerializeField] TextMeshProUGUI healthCostText = null;
+
     [SerializeField] UpgradeButton shieldButton = null;
+    [SerializeField] TextMeshProUGUI shieldCostText = null;
+
     [SerializeField] UpgradeButton pointsButton = null;
+    [SerializeField] TextMeshProUGUI pointsCostText = null;
+
     [SerializeField] TextMeshProUGUI pointMultiplierText = null;
 
     [SerializeField] TextMeshProUGUI levelText = null;
@@ -23,12 +30,16 @@ public class UICanvas : MonoBehaviour
 
     ProjectileSpawner projectileSpawner = null;
 
+    SoundFXManager sfxManager = null;
+
     private void Awake()
     {
         player = FindObjectOfType<Player>();
         projectileSpawner = FindObjectOfType<ProjectileSpawner>();
+        sfxManager = FindObjectOfType<SoundFXManager>();
         player.onUpgrade += MaxLevelCheck;
         projectileSpawner.onLevelUp += UpdateLevelUI;
+        player.onRestart += () => ActivateHUD(true);
     }
 
     private void Start()
@@ -46,6 +57,8 @@ public class UICanvas : MonoBehaviour
         UpdateHealthUI();
         UpdateUpgradeButtons();
         UpdatePointsUI();
+
+        ActivateHUD(false);
     }
 
     private void InitializeUpgradeButtons()
@@ -55,7 +68,13 @@ public class UICanvas : MonoBehaviour
             upgradeButton.GetButton().onClick.AddListener(() => player.Upgrade(upgradeButton.GetUpgradeType()));
             upgradeButton.GetButton().onClick.AddListener(() => UpdateUpgradeButtons());
             upgradeButton.GetButton().onClick.AddListener(() => UpdatePointsUI());
+            upgradeButton.GetButton().onClick.AddListener(() => sfxManager.PlayAudioClip(Sound.LevelUp));
         }
+    }
+
+    public void ActivateHUD(bool shouldActivate)
+    {
+        hud.SetActive(shouldActivate);
     }
 
     private void UpdateHealthUI()
@@ -69,9 +88,12 @@ public class UICanvas : MonoBehaviour
         foreach(UpgradeButton upgradeButton in GetUpgradeButtons())
         {
             upgradeButton.GetButton().interactable = false;
-            //Set text to indicate cost or max
             upgradeButton.SetToActive(false);
         }
+
+        healthCostText.text = player.GetHealth().GetNextLevelCost().ToString();
+        pointsCostText.text = player.GetPoints().GetNextLevelCost().ToString();
+        shieldCostText.text = player.GetShield().GetNextLevelCost().ToString();
 
         if (player.CanAffordUpgrade(UpgradeType.Health))
         {
@@ -93,7 +115,7 @@ public class UICanvas : MonoBehaviour
     private void UpdatePointsUI()
     {
         pointsText.text = playerPoints.GetPlayerPoints().ToString("F0") + "g";
-        pointMultiplierText.text = playerPoints.GetPointMultiplier().ToString() + "x";
+        pointMultiplierText.text = playerPoints.GetPointMultiplier().ToString("F1") + "x";
     }
 
     public UpgradeButton GetUpgradeButton(UpgradeType upgradeType)

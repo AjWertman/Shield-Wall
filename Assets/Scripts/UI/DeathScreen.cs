@@ -23,6 +23,7 @@ public class DeathScreen : MonoBehaviour
         canvasGroup = GetComponent<CanvasGroup>();
         uiCanvas = FindObjectOfType<UICanvas>();
         canvasGroup.alpha = 0;
+        canvasGroup.blocksRaycasts = false;
     }
 
     private void Start()
@@ -32,8 +33,9 @@ public class DeathScreen : MonoBehaviour
 
     public IEnumerator InitiateDeathSequence(float score)
     {
+        canvasGroup.blocksRaycasts = true;
         scoreText.text = score.ToString("F0") + "!";
-        uiCanvas.gameObject.SetActive(false);
+        uiCanvas.ActivateHUD(false);
         yield return FadeOut(fadeOutTime);
         buttonGroup.SetActive(true);
     }

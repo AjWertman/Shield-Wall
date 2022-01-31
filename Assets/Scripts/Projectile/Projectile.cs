@@ -5,6 +5,10 @@ public enum ProjectileType { lArrow, rArrow, hArrow, Health, Wealth }
 public class Projectile : MonoBehaviour
 {
     [SerializeField] ProjectileType projectileType = ProjectileType.rArrow;
+
+    [SerializeField] Sound launchSound = Sound.Woosh;
+    [SerializeField] Sound shieldHitSound = Sound.ShieldBlock;
+    [SerializeField] Sound castleHitSound = Sound.RockHit;
     
     [SerializeField] float projectileSpeed = 10f;
     [SerializeField] float pointsReward = 1;
@@ -67,5 +71,20 @@ public class Projectile : MonoBehaviour
         else if (projectileType == ProjectileType.rArrow) return true;
         else if (projectileType == ProjectileType.hArrow) return true;
         else return false;
+    }
+
+    public Sound GetLaunchSound()
+    {
+        return launchSound;
+    }
+
+    public Sound GetShieldHitSound()
+    {
+        return shieldHitSound;
+    }
+
+    public Sound GetCastleHitSound()
+    {
+        return castleHitSound;
     }
 }

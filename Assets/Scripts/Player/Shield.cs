@@ -50,8 +50,6 @@ public class Shield : MonoBehaviour
         transform.position = startPosition;
 
         moveSpeed = shieldProgressions[0].GetShieldSpeed();
-
-        canMove = true;
     }
 
     private void Update()

@@ -14,7 +14,10 @@ public class ProjectileSpawner : MonoBehaviour
     ProjectilesSpawnProgression currentProgression = null;
     ProjectilePool projectilePool = null;
 
+    SoundFXManager sfxManager = null;
+
     bool canSpawnProjectiles = true;
+    bool isActivated = false;
 
     float minYClamp = 0f;
     float maxYClamp = 0f;
@@ -31,19 +34,15 @@ public class ProjectileSpawner : MonoBehaviour
     private void Awake()
     {
         projectilePool = GetComponent<ProjectilePool>();
+        sfxManager = FindObjectOfType<SoundFXManager>();
         SetLauncherClamps();
 
         maxLevel = projectilesSpawnProgressions.Length - 1;
     }
 
-    private void Start()
-    {
-        StartCoroutine(StartDeathModeCountdown());
-        currentProgression = GetProjectileSpawnProgression();
-    }
-
     private void Update()
     {
+        if (!isActivated) return;
         if (canSpawnProjectiles)
         {
             canSpawnProjectiles = false;
@@ -66,6 +65,8 @@ public class ProjectileSpawner : MonoBehaviour
         newProjectile.transform.rotation = transform.rotation;
 
         newProjectile.SetIsActive(true);
+
+        sfxManager.PlayAudioClip(newProjectile.GetLaunchSound());
 
         yield return new WaitForSeconds(timeBetweenProjectiles);
         canSpawnProjectiles = true;
@@ -116,9 +117,11 @@ public class ProjectileSpawner : MonoBehaviour
     public void Restart()
     {
         projectilePool.CallBackAllProjectiles();
-        level = 0;
+        level = 1;
+        onLevelUp(level, false);
         currentProgression = GetProjectileSpawnProgression();
         StartCoroutine(StartDeathModeCountdown());
+        isActivated = true;
     }
 
     private ProjectileType GetRandomProjectileType()

@@ -7,39 +7,37 @@ public class Player : MonoBehaviour
     Shield shield = null;
     Points points = null;
 
-    ProjectileSpawner projectileSpawner = null;
     DeathScreen deathScreen = null;
+    ProjectileSpawner projectileSpawner = null;
+    SoundFXManager sfxManager = null;
+    Tutorial tutorial = null;
 
     public event Action<UpgradeType, bool> onUpgrade;
     public event Action onRestart;
 
     private void Awake()
     {
-        InitializeHealth();
-        InitializeShield();
+        health = GetComponent<Health>();
+        health.onDeath += Die;
+        shield = FindObjectOfType<Shield>();
+        shield.onProjectileHit += OnShieldHit;
         points = GetComponent<Points>();
         deathScreen = FindObjectOfType<DeathScreen>();
         deathScreen.onRestartButton += StartNewGame;
         projectileSpawner = FindObjectOfType<ProjectileSpawner>();
+        sfxManager = FindObjectOfType<SoundFXManager>();
+        sfxManager.ActivateSounds(true);
+        tutorial = FindObjectOfType<Tutorial>();
+        tutorial.onTutorialComplete += StartNewGame;
     }
 
-    private void InitializeHealth()
-    {
-        health = GetComponent<Health>();
-        health.onDeath += Die;
-    }
-    private void InitializeShield()
-    {
-        shield = FindObjectOfType<Shield>();
-        shield.onProjectileHit += OnShieldHit;
-    }
-
-    private void StartNewGame()
-    {
+    public void StartNewGame()
+    {      
         projectileSpawner.Restart();
         health.Restart();
         shield.Restart();
         points.Restart();
+        sfxManager.ActivateSounds(true);
         onRestart();
     }
 
@@ -50,6 +48,8 @@ public class Player : MonoBehaviour
             points.AddPoints(projectile.GetPointsReward());
         }
 
+        sfxManager.PlayAudioClip(projectile.GetShieldHitSound());
+
         projectile.SetIsActive(false);
         projectile.gameObject.SetActive(false);
     }
@@ -58,6 +58,7 @@ public class Player : MonoBehaviour
     {
         shield.SetCanMove(false);
         projectileSpawner.DeathBehavior();
+        sfxManager.ActivateSounds(false);
 
         StartCoroutine(deathScreen.InitiateDeathSequence(points.GetPlayerPoints()));
     }
@@ -122,6 +123,7 @@ public class Player : MonoBehaviour
         if (projectile == null) return;
 
         CastleProjectileTriggerBehavior(projectile);
+        sfxManager.PlayAudioClip(projectile.GetCastleHitSound());
 
         projectile.SetIsActive(false);
         projectile.gameObject.SetActive(false);
