@@ -38,6 +38,8 @@ public class Shield : MonoBehaviour
 
     public event Action<Projectile> onProjectileHit;
 
+    bool canMove = false;
+
     private void Awake()
     {
         maxLevel = shieldProgressions.Length - 1;
@@ -48,10 +50,13 @@ public class Shield : MonoBehaviour
         transform.position = startPosition;
 
         moveSpeed = shieldProgressions[0].GetShieldSpeed();
+
+        canMove = true;
     }
 
     private void Update()
     {
+        if (!canMove) return;
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
             MoveShield(Vector3.up);
@@ -95,12 +100,27 @@ public class Shield : MonoBehaviour
         return currentLevel == maxLevel;
     }
 
+    public void Restart()
+    {
+        currentLevel = 0;
+        transform.position = startPosition;
+
+        moveSpeed = shieldProgressions[0].GetShieldSpeed();
+
+        canMove = true;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         Projectile projectile = other.GetComponent<Projectile>();
         if (projectile == null) return;
 
         onProjectileHit(projectile);
+    }
+
+    public void SetCanMove(bool shouldSet)
+    {
+        canMove = shouldSet;
     }
 
     public ShieldProgression GetProgression(int level)

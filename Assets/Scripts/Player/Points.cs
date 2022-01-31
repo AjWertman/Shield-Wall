@@ -36,6 +36,13 @@ public class Points : MonoBehaviour
         pointMultiplier += .2f;
     }
 
+    public void Restart()
+    {
+        pointMultiplier = 1;
+        playerPoints = 0;
+        onPointsChange();
+    }
+
     public float GetNextLevelCost()
     {
         float nextLevelCost = pointMultiplier * 100;

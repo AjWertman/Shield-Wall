@@ -65,10 +65,11 @@ public class UICanvas : MonoBehaviour
     }
 
     private void UpdateUpgradeButtons()
-    {
+    { 
         foreach(UpgradeButton upgradeButton in GetUpgradeButtons())
         {
             upgradeButton.GetButton().interactable = false;
+            //Set text to indicate cost or max
             upgradeButton.SetToActive(false);
         }
 

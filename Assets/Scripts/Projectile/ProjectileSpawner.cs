@@ -11,7 +11,7 @@ public class ProjectileSpawner : MonoBehaviour
     [SerializeField] float secondsBetweenLevelUp = 30f;
     [SerializeField] float secondsUntilDeathMode = 300f;
 
-    public ProjectilesSpawnProgression currentProgression = null;
+    ProjectilesSpawnProgression currentProgression = null;
     ProjectilePool projectilePool = null;
 
     bool canSpawnProjectiles = true;
@@ -22,9 +22,9 @@ public class ProjectileSpawner : MonoBehaviour
     int level = 0;
     int maxLevel = 0;
 
-    float gameTimer = 0f;
-
     bool hasStartedLevelUp = false;
+
+    bool isDead = false;
 
     public event Action<int, bool> onLevelUp;
 
@@ -34,7 +34,6 @@ public class ProjectileSpawner : MonoBehaviour
         SetLauncherClamps();
 
         maxLevel = projectilesSpawnProgressions.Length - 1;
-        currentProgression = projectilesSpawnProgressions[0];   
     }
 
     private void Start()
@@ -50,8 +49,6 @@ public class ProjectileSpawner : MonoBehaviour
             canSpawnProjectiles = false;
             StartCoroutine(LaunchProjectile());
         }
-        
-        gameTimer += Time.deltaTime;
 
         if (hasStartedLevelUp || level >= maxLevel) return;
         StartCoroutine(Progression());
@@ -116,9 +113,22 @@ public class ProjectileSpawner : MonoBehaviour
         maxYClamp = shield.GetMaxYClamp();
     }
 
+    public void Restart()
+    {
+        projectilePool.CallBackAllProjectiles();
+        level = 0;
+        currentProgression = GetProjectileSpawnProgression();
+        StartCoroutine(StartDeathModeCountdown());
+    }
+
     private ProjectileType GetRandomProjectileType()
     {
         int randomArrowInt = UnityEngine.Random.Range(0, 100);
+
+        if (isDead)
+        {
+            return GetArrowsOnlyProjectileType();
+        }
 
         foreach(ProjectileSpawnChances projectileSpawnChance in currentProgression.GetProjectileSpawnChances())
         {
@@ -131,6 +141,29 @@ public class ProjectileSpawner : MonoBehaviour
         }
 
         return ProjectileType.rArrow;
+    }
+
+    public void DeathBehavior()
+    {
+        isDead = true;
+    }
+
+    private ProjectileType GetArrowsOnlyProjectileType()
+    {
+        int random = UnityEngine.Random.Range(0, 3);
+
+        if(random == 0)
+        {
+            return ProjectileType.lArrow;
+        }
+        else if(random == 1)
+        {
+            return ProjectileType.rArrow;
+        }
+        else
+        {
+            return ProjectileType.hArrow;
+        }
     }
 
     private ProjectilesSpawnProgression GetProjectileSpawnProgression()

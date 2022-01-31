@@ -7,13 +7,20 @@ public class Player : MonoBehaviour
     Shield shield = null;
     Points points = null;
 
+    ProjectileSpawner projectileSpawner = null;
+    DeathScreen deathScreen = null;
+
     public event Action<UpgradeType, bool> onUpgrade;
+    public event Action onRestart;
 
     private void Awake()
     {
         InitializeHealth();
         InitializeShield();
         points = GetComponent<Points>();
+        deathScreen = FindObjectOfType<DeathScreen>();
+        deathScreen.onRestartButton += StartNewGame;
+        projectileSpawner = FindObjectOfType<ProjectileSpawner>();
     }
 
     private void InitializeHealth()
@@ -25,6 +32,15 @@ public class Player : MonoBehaviour
     {
         shield = FindObjectOfType<Shield>();
         shield.onProjectileHit += OnShieldHit;
+    }
+
+    private void StartNewGame()
+    {
+        projectileSpawner.Restart();
+        health.Restart();
+        shield.Restart();
+        points.Restart();
+        onRestart();
     }
 
     private void OnShieldHit(Projectile projectile)
@@ -40,11 +56,10 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
-        print("Die");
-        //Turn off shield movement
-        //Stop Projectile launcher
-        //Log high score
-        //Show end screen(play again/quit)
+        shield.SetCanMove(false);
+        projectileSpawner.DeathBehavior();
+
+        StartCoroutine(deathScreen.InitiateDeathSequence(points.GetPlayerPoints()));
     }
 
     public void Upgrade(UpgradeType upgradeType)

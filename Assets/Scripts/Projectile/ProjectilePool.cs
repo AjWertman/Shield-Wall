@@ -34,6 +34,7 @@ public class ProjectileSlot
 public class ProjectilePool : MonoBehaviour
 {
     [SerializeField] ProjectileSlot[] projectileSlots = null;
+    List<Projectile> allActiveProjectiles = new List<Projectile>();
     
     private void Start()
     {
@@ -49,6 +50,7 @@ public class ProjectilePool : MonoBehaviour
                 GameObject projectileInstance = Instantiate(projectileSlot.GetProjectilePrefab());
                 Projectile projectile = projectileInstance.GetComponent<Projectile>();
                 projectileSlot.GetProjectilesList().Add(projectile);
+                allActiveProjectiles.Add(projectile);
                 projectile.SetIsActive(false);
                 projectile.gameObject.SetActive(false);
             }
@@ -83,5 +85,14 @@ public class ProjectilePool : MonoBehaviour
         }
 
         return slotToGet.GetProjectilesList();
+    }
+
+    public void CallBackAllProjectiles()
+    {
+        foreach(Projectile projectile in allActiveProjectiles)
+        {
+            projectile.SetIsActive(false);
+            projectile.gameObject.SetActive(false);
+        }
     }
 }

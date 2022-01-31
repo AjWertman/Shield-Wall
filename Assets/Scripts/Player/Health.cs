@@ -1,30 +1,6 @@
 using System;
 using UnityEngine;
 
-[Serializable]
-public class HealthProgression
-{
-    [SerializeField] int level = 0;
-    [SerializeField] float nextLevelCost = 100;
-
-    [SerializeField] float health = 100f;
-
-    public int GetLevel()
-    {
-        return level;
-    }
-
-    public float GetNextLevelCost()
-    {
-        return nextLevelCost;
-    }
-
-    public float GetMaxHealth()
-    {
-        return health;
-    }
-}
-
 public class Health : MonoBehaviour
 {
     [SerializeField] HealthProgression[] healthProgressions = null;
@@ -34,6 +10,8 @@ public class Health : MonoBehaviour
 
     [SerializeField] float castleHealth = 100f;
     [SerializeField] float maxHealth = 100f;
+
+    bool isDead = false;
 
     public event Action onHealthChange;
     public event Action onDeath;
@@ -47,6 +25,7 @@ public class Health : MonoBehaviour
 
     public void DamageHealth(float damageAmount)
     {
+        if (isDead) return;
         castleHealth -= damageAmount;
         castleHealth = Mathf.Clamp(castleHealth, 0f, maxHealth);
 
@@ -54,6 +33,7 @@ public class Health : MonoBehaviour
 
         if (castleHealth == 0)
         {
+            isDead = true;
             onDeath();
         }
     }
@@ -75,6 +55,17 @@ public class Health : MonoBehaviour
         
         maxHealth = currentProgression.GetMaxHealth();
         castleHealth = maxHealth;
+        onHealthChange();
+    }
+
+    public void Restart()
+    {
+        currentLevel = 0;
+        maxLevel = healthProgressions.Length - 1;
+        maxHealth = healthProgressions[0].GetMaxHealth();
+        castleHealth = maxHealth;
+        isDead = false;
+
         onHealthChange();
     }
 
@@ -118,5 +109,29 @@ public class Health : MonoBehaviour
         }
 
         return progression;
+    }
+}
+
+[Serializable]
+public class HealthProgression
+{
+    [SerializeField] int level = 0;
+    [SerializeField] float nextLevelCost = 100;
+
+    [SerializeField] float health = 100f;
+
+    public int GetLevel()
+    {
+        return level;
+    }
+
+    public float GetNextLevelCost()
+    {
+        return nextLevelCost;
+    }
+
+    public float GetMaxHealth()
+    {
+        return health;
     }
 }
