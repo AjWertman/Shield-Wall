@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8436455241937379520}
   - component: {fileID: 843665670447560549}
   - component: {fileID: 4867850463619629669}
-  - component: {fileID: 449213228700708464}
   m_Layer: 0
   m_Name: ShieldHole
   m_TagString: Untagged
@@ -84,20 +83,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &449213228700708464
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1718119189545957072}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7956899988643944705
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,38 +159,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17316286e63294748a783e5fba4eedf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pointMultiplierProgressions:
-  - level: 0
-    nextLevelCost: 100
-    pointMultiplier: 1
-  - level: 1
-    nextLevelCost: 200
-    pointMultiplier: 1.2
-  - level: 2
-    nextLevelCost: 300
-    pointMultiplier: 1.4
-  - level: 3
-    nextLevelCost: 400
-    pointMultiplier: 1.6
-  - level: 4
-    nextLevelCost: 500
-    pointMultiplier: 1.8
-  - level: 5
-    nextLevelCost: 600
-    pointMultiplier: 2
-  - level: 6
-    nextLevelCost: 700
-    pointMultiplier: 2.4
-  - level: 7
-    nextLevelCost: 800
-    pointMultiplier: 2.8
-  - level: 8
-    nextLevelCost: 900
-    pointMultiplier: 3.2
-  - level: 9
-    nextLevelCost: 1000000000
-    pointMultiplier: 4
-  currentLevel: 0
   playerPoints: 0
   pointMultiplier: 1
 --- !u!114 &463515057
@@ -222,14 +175,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthProgressions:
   - level: 0
-    nextLevelCost: 200
+    nextLevelCost: 300
     health: 100
   - level: 1
-    nextLevelCost: 400
+    nextLevelCost: 1500
     health: 150
   - level: 2
     nextLevelCost: 100000000
-    health: 250
+    health: 200
   currentLevel: 0
   castleHealth: 100
   maxHealth: 100
@@ -385,6 +338,76 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 6082104446675864731}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6082104447132903692
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1234204928274430392}
+    m_Modifications:
+    - target: {fileID: 146086, guid: b2ccf63e5a3aab9438ac359089017a46, type: 3}
+      propertyPath: m_Name
+      value: SM_Bld_Castle_Tower_Round_Top_01_Lite
+      objectReference: {fileID: 0}
+    - target: {fileID: 497654, guid: b2ccf63e5a3aab9438ac359089017a46, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 497654, guid: b2ccf63e5a3aab9438ac359089017a46, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.81465
+      objectReference: {fileID: 0}
+    - target: {fileID: 497654, guid: b2ccf63e5a3aab9438ac359089017a46, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5431
+      objectReference: {fileID: 0}
+    - target: {fileID: 497654, guid: b2ccf63e5a3aab9438ac359089017a46, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.81465
+      objectReference: {fileID: 0}
+    - target: {fileID: 497654, guid: b2ccf63e5a3aab9438ac359089017a46, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 497654, guid: b2ccf63e5a3aab9438ac359089017a46, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.734
+      objectReference: {fileID: 0}
+    - target: {fileID: 497654, guid: b2ccf63e5a3aab9438ac359089017a46, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 497654, guid: b2ccf63e5a3aab9438ac359089017a46, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 497654, guid: b2ccf63e5a3aab9438ac359089017a46, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 497654, guid: b2ccf63e5a3aab9438ac359089017a46, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 497654, guid: b2ccf63e5a3aab9438ac359089017a46, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 497654, guid: b2ccf63e5a3aab9438ac359089017a46, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 497654, guid: b2ccf63e5a3aab9438ac359089017a46, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 497654, guid: b2ccf63e5a3aab9438ac359089017a46, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 64429523646057108, guid: b2ccf63e5a3aab9438ac359089017a46, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: b2ccf63e5a3aab9438ac359089017a46, type: 3}
 --- !u!1001 &6082104447552065649
 PrefabInstance:
   m_ObjectHideFlags: 0

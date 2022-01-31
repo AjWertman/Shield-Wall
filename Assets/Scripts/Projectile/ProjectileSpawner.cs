@@ -2,46 +2,16 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-[Serializable]
-public class ProjectilesSpawnProgression
-{
-    [SerializeField] int level = 0;
-    [SerializeField] float timeBetweenProjectiles = 2f;
-
-    public int GetLevel()
-    {
-        return level;
-    }
-
-    public float GetTimeBetweenProjectiles()
-    {
-        return timeBetweenProjectiles;
-    }
-}
-
-[Serializable]
-public class ProjectileSpawnChances
-{
-    [SerializeField] ProjectileType projectileType = ProjectileType.rArrow;
-    [SerializeField] Vector2 chances = Vector2.zero;
-
-    public ProjectileType GetProjectileType()
-    {
-        return projectileType;
-    }
-
-    public Vector2 GetChances()
-    {
-        return chances;
-    }
-}
-
 public class ProjectileSpawner : MonoBehaviour
 {
     [SerializeField] ProjectilesSpawnProgression[] projectilesSpawnProgressions = null;
-    [SerializeField] ProjectileSpawnChances[] projectileSpawnChances = null;
-    [SerializeField] float timeBetweenProjectiles = 2f;
+    [SerializeField] ProjectilesSpawnProgression deathMode = null;
 
+    [SerializeField] float timeBetweenProjectiles = 2f;
+    [SerializeField] float secondsBetweenLevelUp = 30f;
+    [SerializeField] float secondsUntilDeathMode = 300f;
+
+    public ProjectilesSpawnProgression currentProgression = null;
     ProjectilePool projectilePool = null;
 
     bool canSpawnProjectiles = true;
@@ -52,13 +22,25 @@ public class ProjectileSpawner : MonoBehaviour
     int level = 0;
     int maxLevel = 0;
 
+    float gameTimer = 0f;
+
+    bool hasStartedLevelUp = false;
+
+    public event Action<int, bool> onLevelUp;
+
     private void Awake()
     {
         projectilePool = GetComponent<ProjectilePool>();
         SetLauncherClamps();
 
         maxLevel = projectilesSpawnProgressions.Length - 1;
-        timeBetweenProjectiles = projectilesSpawnProgressions[0].GetTimeBetweenProjectiles();
+        currentProgression = projectilesSpawnProgressions[0];   
+    }
+
+    private void Start()
+    {
+        StartCoroutine(StartDeathModeCountdown());
+        currentProgression = GetProjectileSpawnProgression();
     }
 
     private void Update()
@@ -68,11 +50,11 @@ public class ProjectileSpawner : MonoBehaviour
             canSpawnProjectiles = false;
             StartCoroutine(LaunchProjectile());
         }
+        
+        gameTimer += Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            AdvanceLevel();
-        }
+        if (hasStartedLevelUp || level >= maxLevel) return;
+        StartCoroutine(Progression());
     }
 
     private IEnumerator LaunchProjectile()
@@ -92,12 +74,32 @@ public class ProjectileSpawner : MonoBehaviour
         canSpawnProjectiles = true;
     }
 
+    private IEnumerator Progression()
+    {
+        hasStartedLevelUp = true;
+        yield return new WaitForSeconds(secondsBetweenLevelUp);
+        AdvanceLevel();
+        hasStartedLevelUp = false;
+    }
+
     public void AdvanceLevel()
     {
         if (level + 1 > maxLevel) return;
+
         level++;
 
-        timeBetweenProjectiles = projectilesSpawnProgressions[level].GetTimeBetweenProjectiles();
+        currentProgression = GetProjectileSpawnProgression();
+        timeBetweenProjectiles = currentProgression.GetTimeBetweenProjectiles();
+        onLevelUp(level, false);
+    }
+
+    private IEnumerator StartDeathModeCountdown()
+    {
+        yield return new WaitForSeconds(secondsUntilDeathMode);
+        currentProgression = deathMode;
+        timeBetweenProjectiles = currentProgression.GetTimeBetweenProjectiles();
+
+        onLevelUp(0, true);
     }
 
     private void SetRandomYPosition()
@@ -118,7 +120,7 @@ public class ProjectileSpawner : MonoBehaviour
     {
         int randomArrowInt = UnityEngine.Random.Range(0, 100);
 
-        foreach(ProjectileSpawnChances projectileSpawnChance in projectileSpawnChances)
+        foreach(ProjectileSpawnChances projectileSpawnChance in currentProgression.GetProjectileSpawnChances())
         {
             Vector2 chances = projectileSpawnChance.GetChances();
 
@@ -129,5 +131,60 @@ public class ProjectileSpawner : MonoBehaviour
         }
 
         return ProjectileType.rArrow;
+    }
+
+    private ProjectilesSpawnProgression GetProjectileSpawnProgression()
+    {
+        ProjectilesSpawnProgression progression = null;
+
+        foreach (ProjectilesSpawnProgression projectilesSpawnProgression in projectilesSpawnProgressions)
+        {
+            if (projectilesSpawnProgression.GetLevel() == level)
+            {
+                progression = projectilesSpawnProgression;
+            }
+        }
+
+        return progression;
+    }
+}
+
+[Serializable]
+public class ProjectilesSpawnProgression
+{
+    [SerializeField] int level = 0;
+    [SerializeField] float timeBetweenProjectiles = 2f;
+    [SerializeField] ProjectileSpawnChances[] projectileSpawnChances = null;
+
+    public int GetLevel()
+    {
+        return level;
+    }
+
+    public float GetTimeBetweenProjectiles()
+    {
+        return timeBetweenProjectiles;
+    }
+
+    public ProjectileSpawnChances[] GetProjectileSpawnChances()
+    {
+        return projectileSpawnChances;
+    }
+}
+
+[Serializable]
+public class ProjectileSpawnChances
+{
+    [SerializeField] ProjectileType projectileType = ProjectileType.rArrow;
+    [SerializeField] Vector2 chances = Vector2.zero;
+
+    public ProjectileType GetProjectileType()
+    {
+        return projectileType;
+    }
+
+    public Vector2 GetChances()
+    {
+        return chances;
     }
 }

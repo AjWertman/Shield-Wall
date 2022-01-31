@@ -1,18 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!65 &3282710391762458565
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7338595967596222809}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.3, y: 0.3, z: 1}
-  m_Center: {x: 0, y: 0, z: 0.31}
 --- !u!1 &3951147427602496006
 GameObject:
   m_ObjectHideFlags: 0
@@ -153,6 +140,19 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
+--- !u!65 &3282710391762458565
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7338595967596222809}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.3, y: 0.3, z: 1}
+  m_Center: {x: 0, y: 0, z: 0.31}
 --- !u!1001 &235107864000615929
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -309,6 +309,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: RegularArrow
+      objectReference: {fileID: 0}
+    - target: {fileID: 8843165134188038960, guid: 42d0ffd17112207429100534ed8dd156,
+        type: 3}
+      propertyPath: pointsReward
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8843165134188038960, guid: 42d0ffd17112207429100534ed8dd156,
         type: 3}

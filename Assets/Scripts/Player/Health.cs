@@ -5,7 +5,7 @@ using UnityEngine;
 public class HealthProgression
 {
     [SerializeField] int level = 0;
-    [SerializeField] int nextLevelCost = 100;
+    [SerializeField] float nextLevelCost = 100;
 
     [SerializeField] float health = 100f;
 
@@ -14,7 +14,7 @@ public class HealthProgression
         return level;
     }
 
-    public int GetNextLevelCost()
+    public float GetNextLevelCost()
     {
         return nextLevelCost;
     }
@@ -74,6 +74,8 @@ public class Health : MonoBehaviour
         HealthProgression currentProgression = GetProgression(currentLevel);
         
         maxHealth = currentProgression.GetMaxHealth();
+        castleHealth = maxHealth;
+        onHealthChange();
     }
 
     public bool IsMaxLevel()
@@ -81,7 +83,7 @@ public class Health : MonoBehaviour
         return currentLevel == maxLevel;
     }
 
-    public int GetNextLevelCost()
+    public float GetNextLevelCost()
     {
         HealthProgression nextProgression = GetProgression(currentLevel);
 

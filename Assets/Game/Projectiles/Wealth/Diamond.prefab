@@ -1,18 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!65 &875937649886883587
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7891933029672319697}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.5, z: 0.5}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1310025390013029636
 GameObject:
   m_ObjectHideFlags: 0
@@ -110,6 +97,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &875937649886883587
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7891933029672319697}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 0.5, z: 0.5}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &424933987852340068
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -195,7 +195,7 @@ PrefabInstance:
     - target: {fileID: 8843165134188038960, guid: 42d0ffd17112207429100534ed8dd156,
         type: 3}
       propertyPath: projectileSpeed
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 42d0ffd17112207429100534ed8dd156, type: 3}
@@ -221,11 +221,16 @@ PrefabInstance:
     - target: {fileID: 2185256548090989456, guid: 370da80b6bdb0524fb1e51f995160647,
         type: 3}
       propertyPath: m_Shape
-      value: 1420503753278357681
+      value: 1420503756073075104
       objectReference: {fileID: 0}
     - target: {fileID: 2185256548090989456, guid: 370da80b6bdb0524fb1e51f995160647,
         type: 3}
       propertyPath: managedReferences[1420503753278357681]
+      value: Unity.ProBuilder UnityEngine.ProBuilder.Shapes.Cone
+      objectReference: {fileID: 0}
+    - target: {fileID: 2185256548090989456, guid: 370da80b6bdb0524fb1e51f995160647,
+        type: 3}
+      propertyPath: managedReferences[1420503756073075104]
       value: Unity.ProBuilder UnityEngine.ProBuilder.Shapes.Cone
       objectReference: {fileID: 0}
     - target: {fileID: 2185256548090989456, guid: 370da80b6bdb0524fb1e51f995160647,
@@ -235,7 +240,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2185256548090989456, guid: 370da80b6bdb0524fb1e51f995160647,
         type: 3}
+      propertyPath: managedReferences[1420503756073075104].m_Smooth
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2185256548090989456, guid: 370da80b6bdb0524fb1e51f995160647,
+        type: 3}
       propertyPath: managedReferences[1420503753278357681].m_NumberOfSides
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2185256548090989456, guid: 370da80b6bdb0524fb1e51f995160647,
+        type: 3}
+      propertyPath: managedReferences[1420503756073075104].m_NumberOfSides
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2185256548090989457, guid: 370da80b6bdb0524fb1e51f995160647,

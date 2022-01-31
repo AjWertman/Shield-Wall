@@ -436,27 +436,91 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectilesSpawnProgressions:
   - level: 0
-    timeBetweenProjectiles: 2
-  - level: 1
     timeBetweenProjectiles: 1.8
+    projectileSpawnChances:
+    - projectileType: 0
+      chances: {x: 0, y: 19}
+    - projectileType: 1
+      chances: {x: 20, y: 59}
+    - projectileType: 2
+      chances: {x: 60, y: 79}
+    - projectileType: 3
+      chances: {x: 80, y: 89}
+    - projectileType: 4
+      chances: {x: 90, y: 99}
+  - level: 1
+    timeBetweenProjectiles: 1.6
+    projectileSpawnChances:
+    - projectileType: 0
+      chances: {x: 0, y: 19}
+    - projectileType: 1
+      chances: {x: 20, y: 59}
+    - projectileType: 2
+      chances: {x: 60, y: 79}
+    - projectileType: 3
+      chances: {x: 80, y: 89}
+    - projectileType: 4
+      chances: {x: 90, y: 99}
   - level: 2
-    timeBetweenProjectiles: 1.5
+    timeBetweenProjectiles: 1.4
+    projectileSpawnChances:
+    - projectileType: 0
+      chances: {x: 0, y: 29}
+    - projectileType: 1
+      chances: {x: 30, y: 69}
+    - projectileType: 2
+      chances: {x: 70, y: 79}
+    - projectileType: 3
+      chances: {x: 85, y: 89}
+    - projectileType: 4
+      chances: {x: 90, y: 99}
   - level: 3
-    timeBetweenProjectiles: 1.2
+    timeBetweenProjectiles: 0.9
+    projectileSpawnChances:
+    - projectileType: 0
+      chances: {x: 0, y: 29}
+    - projectileType: 1
+      chances: {x: 30, y: 69}
+    - projectileType: 2
+      chances: {x: 70, y: 79}
+    - projectileType: 3
+      chances: {x: 85, y: 89}
+    - projectileType: 4
+      chances: {x: 90, y: 99}
   - level: 4
+    timeBetweenProjectiles: 0.6
+    projectileSpawnChances:
+    - projectileType: 0
+      chances: {x: 0, y: 29}
+    - projectileType: 1
+      chances: {x: 30, y: 69}
+    - projectileType: 2
+      chances: {x: 70, y: 79}
+    - projectileType: 3
+      chances: {x: 80, y: 84}
+    - projectileType: 4
+      chances: {x: 85, y: 99}
+  deathMode:
+    level: 999
     timeBetweenProjectiles: 0.4
-  projectileSpawnChances:
-  - projectileType: 0
-    chances: {x: 0, y: 15}
-  - projectileType: 1
-    chances: {x: 16, y: 63}
-  - projectileType: 2
-    chances: {x: 64, y: 79}
-  - projectileType: 3
-    chances: {x: 80, y: 89}
-  - projectileType: 4
-    chances: {x: 90, y: 99}
+    projectileSpawnChances:
+    - projectileType: 0
+      chances: {x: 0, y: 29}
+    - projectileType: 1
+      chances: {x: 30, y: 69}
+    - projectileType: 2
+      chances: {x: 70, y: 74}
+    - projectileType: 3
+      chances: {x: 999, y: 1000}
+    - projectileType: 4
+      chances: {x: 75, y: 99}
   timeBetweenProjectiles: 1.2
+  secondsBetweenLevelUp: 30
+  secondsUntilDeathMode: 360
+  currentProgression:
+    level: 0
+    timeBetweenProjectiles: 2
+    projectileSpawnChances: []
 --- !u!114 &8861562888827138418
 MonoBehaviour:
   m_ObjectHideFlags: 0

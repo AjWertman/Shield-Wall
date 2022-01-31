@@ -5,17 +5,16 @@ using UnityEngine;
 public class ShieldProgression
 {
     [SerializeField] int level = 0;
-    [SerializeField] int nextLevelCost = 100;
+    [SerializeField] float nextLevelCost = 100;
 
     [SerializeField] float shieldSpeed = 5f;
-    [SerializeField] GameObject shieldInstanceToActivate = null;
 
     public int GetLevel()
     {
         return level;
     }
 
-    public int GetNextLevelCost()
+    public float GetNextLevelCost()
     {
         return nextLevelCost;
     }
@@ -23,11 +22,6 @@ public class ShieldProgression
     public float GetShieldSpeed()
     {
         return shieldSpeed;
-    }
-
-    public GameObject GetShieldInstanceToActivate()
-    {
-        return shieldInstanceToActivate;
     }
 }
 
@@ -89,7 +83,7 @@ public class Shield : MonoBehaviour
         //deactivate all shield objects - activate the shield to activate
     }
 
-    public int GetNextLevelCost()
+    public float GetNextLevelCost()
     {
         ShieldProgression nextProgression = GetProgression(currentLevel);
 

@@ -15,14 +15,20 @@ public class UICanvas : MonoBehaviour
     [SerializeField] UpgradeButton pointsButton = null;
     [SerializeField] TextMeshProUGUI pointMultiplierText = null;
 
+    [SerializeField] TextMeshProUGUI levelText = null;
+
     Player player = null;
     Health playerHealth = null;
     Points playerPoints = null;
 
+    ProjectileSpawner projectileSpawner = null;
+
     private void Awake()
     {
         player = FindObjectOfType<Player>();
+        projectileSpawner = FindObjectOfType<ProjectileSpawner>();
         player.onUpgrade += MaxLevelCheck;
+        projectileSpawner.onLevelUp += UpdateLevelUI;
     }
 
     private void Start()
@@ -105,6 +111,18 @@ public class UICanvas : MonoBehaviour
         }
 
         return null;
+    }
+
+    private void UpdateLevelUI(int level, bool isDeathLevel)
+    {
+        if (isDeathLevel)
+        {
+            levelText.text = "Doom";
+        }
+        else
+        {
+            levelText.text = level.ToString();
+        }        
     }
 
     private void MaxLevelCheck(UpgradeType upgradeType, bool isMaxLevel)
