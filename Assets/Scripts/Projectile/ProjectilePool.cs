@@ -1,36 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class ProjectileSlot
-{
-    [SerializeField] ProjectileType projectileType = ProjectileType.rArrow;
-    [SerializeField] int amountToCreate = 10;
-    [SerializeField] GameObject projectilePrefab = null;
-
-    List<Projectile> projectilesList = new List<Projectile>();
-
-    public ProjectileType GetProjectileType()
-    {
-        return projectileType;
-    }
-
-    public int GetAmountToCreate()
-    {
-        return amountToCreate;
-    }
-
-    public GameObject GetProjectilePrefab()
-    {
-        return projectilePrefab;
-    }
-
-    public List<Projectile> GetProjectilesList()
-    {
-        return projectilesList;
-    }
-}
-
 public class ProjectilePool : MonoBehaviour
 {
     [SerializeField] ProjectileSlot[] projectileSlots = null;
@@ -47,7 +17,7 @@ public class ProjectilePool : MonoBehaviour
         {
             for (int i = 0; i < projectileSlot.GetAmountToCreate(); i++)
             {
-                GameObject projectileInstance = Instantiate(projectileSlot.GetProjectilePrefab());
+                GameObject projectileInstance = Instantiate(projectileSlot.GetProjectilePrefab(),transform);
                 Projectile projectile = projectileInstance.GetComponent<Projectile>();
                 projectileSlot.GetProjectilesList().Add(projectile);
                 allActiveProjectiles.Add(projectile);
@@ -94,5 +64,35 @@ public class ProjectilePool : MonoBehaviour
             projectile.SetIsActive(false);
             projectile.gameObject.SetActive(false);
         }
+    }
+}
+
+[System.Serializable]
+public class ProjectileSlot
+{
+    [SerializeField] ProjectileType projectileType = ProjectileType.rArrow;
+    [SerializeField] int amountToCreate = 10;
+    [SerializeField] GameObject projectilePrefab = null;
+
+    List<Projectile> projectilesList = new List<Projectile>();
+
+    public ProjectileType GetProjectileType()
+    {
+        return projectileType;
+    }
+
+    public int GetAmountToCreate()
+    {
+        return amountToCreate;
+    }
+
+    public GameObject GetProjectilePrefab()
+    {
+        return projectilePrefab;
+    }
+
+    public List<Projectile> GetProjectilesList()
+    {
+        return projectilesList;
     }
 }

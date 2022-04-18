@@ -44,7 +44,7 @@ MonoBehaviour:
       rgba: 4294967295
     gridLabel: Flat Color Grid
     editGridName: 0
-    isSelected: 1
+    isSelected: 0
     showGridOptions: 1
     isSelectionLocked: 0
     isHandleSelected: 0

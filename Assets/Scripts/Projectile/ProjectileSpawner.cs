@@ -33,7 +33,7 @@ public class ProjectileSpawner : MonoBehaviour
 
     private void Awake()
     {
-        projectilePool = GetComponent<ProjectilePool>();
+        projectilePool = FindObjectOfType<ProjectilePool>();
         sfxManager = FindObjectOfType<SoundFXManager>();
         SetLauncherClamps();
 
@@ -51,6 +51,17 @@ public class ProjectileSpawner : MonoBehaviour
 
         if (hasStartedLevelUp || level >= maxLevel) return;
         StartCoroutine(Progression());
+    }
+
+    public void Activate()
+    {
+        projectilePool.CallBackAllProjectiles();
+        level = 1;
+        onLevelUp(level, false);
+
+        currentProgression = GetProjectileSpawnProgression();
+        StartCoroutine(StartDeathModeCountdown());
+        isActivated = true;
     }
 
     private IEnumerator LaunchProjectile()
@@ -114,14 +125,9 @@ public class ProjectileSpawner : MonoBehaviour
         maxYClamp = shield.GetMaxYClamp();
     }
 
-    public void Restart()
+    public void DeathBehavior()
     {
-        projectilePool.CallBackAllProjectiles();
-        level = 1;
-        onLevelUp(level, false);
-        currentProgression = GetProjectileSpawnProgression();
-        StartCoroutine(StartDeathModeCountdown());
-        isActivated = true;
+        isDead = true;
     }
 
     private ProjectileType GetRandomProjectileType()
@@ -144,11 +150,6 @@ public class ProjectileSpawner : MonoBehaviour
         }
 
         return ProjectileType.rArrow;
-    }
-
-    public void DeathBehavior()
-    {
-        isDead = true;
     }
 
     private ProjectileType GetArrowsOnlyProjectileType()

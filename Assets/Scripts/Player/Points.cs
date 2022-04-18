@@ -10,7 +10,7 @@ public class Points : MonoBehaviour
 
     private void Start()
     {
-        pointMultiplier = 1;
+        pointMultiplier = 1.0f;
     }
 
     public void AddPoints(float pointsToAdd)
@@ -40,12 +40,22 @@ public class Points : MonoBehaviour
     {
         pointMultiplier = 1;
         playerPoints = 0;
+
         onPointsChange();
     }
 
-    public float GetNextLevelCost()
+    public float GetLevelUpCost()
     {
-        float nextLevelCost = pointMultiplier * 100;
+        float nextLevelCost = 0;
+        if (!IsMaxLevel())
+        {
+            nextLevelCost = Mathf.Round(pointMultiplier * 100f);
+        }
+        else
+        {
+            nextLevelCost = Mathf.Infinity;
+        }
+        
         return nextLevelCost;
     }
 

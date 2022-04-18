@@ -1,35 +1,11 @@
 using System;
 using UnityEngine;
 
-[System.Serializable]
-public class ShieldProgression
-{
-    [SerializeField] int level = 0;
-    [SerializeField] float nextLevelCost = 100;
-
-    [SerializeField] float shieldSpeed = 5f;
-
-    public int GetLevel()
-    {
-        return level;
-    }
-
-    public float GetNextLevelCost()
-    {
-        return nextLevelCost;
-    }
-
-    public float GetShieldSpeed()
-    {
-        return shieldSpeed;
-    }
-}
-
 public class Shield : MonoBehaviour
 {
     [SerializeField] ShieldProgression[] shieldProgressions = null;
     [SerializeField] int currentLevel = -1;
-    int maxLevel = 0;
+    [SerializeField] int maxLevel = 0;
 
     [SerializeField] Vector3 startPosition = Vector3.zero;
     [SerializeField] Vector2 yClamps = Vector2.zero;
@@ -43,13 +19,16 @@ public class Shield : MonoBehaviour
     private void Awake()
     {
         maxLevel = shieldProgressions.Length - 1;
+        GetProgression(maxLevel).SetCost(Mathf.Infinity);
+
+        currentLevel = 0;
     }
 
     private void Start()
     {
         transform.position = startPosition;
 
-        moveSpeed = shieldProgressions[0].GetShieldSpeed();
+        moveSpeed = shieldProgressions[currentLevel].GetShieldSpeed();
     }
 
     private void Update()
@@ -90,7 +69,7 @@ public class Shield : MonoBehaviour
     {
         ShieldProgression nextProgression = GetProgression(currentLevel);
 
-        return nextProgression.GetNextLevelCost();
+        return nextProgression.GetLevelUpCost();
     }
 
     public bool IsMaxLevel()
@@ -130,6 +109,7 @@ public class Shield : MonoBehaviour
             if (shieldProgression.GetLevel() == level)
             {
                 progression = shieldProgression;
+                break;
             }
         }
         return progression;
@@ -142,5 +122,34 @@ public class Shield : MonoBehaviour
     public float GetMaxYClamp()
     {
         return yClamps.y;
+    }
+}
+
+[System.Serializable]
+public class ShieldProgression
+{
+    [SerializeField] int level = 0;
+    [SerializeField] float levelUpCost = 100;
+
+    [SerializeField] float shieldSpeed = 5f;
+
+    public int GetLevel()
+    {
+        return level;
+    }
+
+    public float GetLevelUpCost()
+    {
+        return levelUpCost;
+    }
+
+    public void SetCost(float newCost)
+    {
+        levelUpCost = newCost;
+    }
+
+    public float GetShieldSpeed()
+    {
+        return shieldSpeed;
     }
 }

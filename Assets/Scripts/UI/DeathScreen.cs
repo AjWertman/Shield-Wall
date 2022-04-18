@@ -59,6 +59,7 @@ public class DeathScreen : MonoBehaviour
     private void PlayAgain()
     {
         canvasGroup.alpha = 0;
+        canvasGroup.blocksRaycasts = false;
         uiCanvas.gameObject.SetActive(true);
         onRestartButton();
     }

@@ -8,17 +8,9 @@ public class UICanvas : MonoBehaviour
     [SerializeField] GameObject hud = null;
     [SerializeField] TextMeshProUGUI healthText = null;
     [SerializeField] Slider healthSlider = null;
-
     [SerializeField] TextMeshProUGUI pointsText = null;
 
-    [SerializeField] UpgradeButton healthButton = null;
-    [SerializeField] TextMeshProUGUI healthCostText = null;
-
-    [SerializeField] UpgradeButton shieldButton = null;
-    [SerializeField] TextMeshProUGUI shieldCostText = null;
-
-    [SerializeField] UpgradeButton pointsButton = null;
-    [SerializeField] TextMeshProUGUI pointsCostText = null;
+    [SerializeField] Upgrade[] upgrades = null;
 
     [SerializeField] TextMeshProUGUI pointMultiplierText = null;
 
@@ -70,6 +62,8 @@ public class UICanvas : MonoBehaviour
             upgradeButton.GetButton().onClick.AddListener(() => UpdatePointsUI());
             upgradeButton.GetButton().onClick.AddListener(() => sfxManager.PlayAudioClip(Sound.LevelUp));
         }
+
+        UpdateUpgradeButtons();
     }
 
     public void ActivateHUD(bool shouldActivate)
@@ -83,57 +77,40 @@ public class UICanvas : MonoBehaviour
         healthSlider.value = playerHealth.GetHealthPercentage();
     }
 
-    private void UpdateUpgradeButtons()
-    { 
-        foreach(UpgradeButton upgradeButton in GetUpgradeButtons())
-        {
-            upgradeButton.GetButton().interactable = false;
-            upgradeButton.SetToActive(false);
-        }
-
-        healthCostText.text = player.GetHealth().GetNextLevelCost().ToString();
-        pointsCostText.text = player.GetPoints().GetNextLevelCost().ToString();
-        shieldCostText.text = player.GetShield().GetNextLevelCost().ToString();
-
-        if (player.CanAffordUpgrade(UpgradeType.Health))
-        {
-            healthButton.GetButton().interactable = true;
-            healthButton.SetToActive(true);
-        }
-        if (player.CanAffordUpgrade(UpgradeType.PointsMultiplier))
-        {
-            pointsButton.GetButton().interactable = true;
-            pointsButton.SetToActive(true);
-        }
-        if (player.CanAffordUpgrade(UpgradeType.Shield))
-        {
-            shieldButton.GetButton().interactable = true;
-            shieldButton.SetToActive(true);
-        }
-    }
-
     private void UpdatePointsUI()
     {
         pointsText.text = playerPoints.GetPlayerPoints().ToString("F0") + "g";
-        pointMultiplierText.text = playerPoints.GetPointMultiplier().ToString("F1") + "x";
+        pointMultiplierText.text = playerPoints.GetPointMultiplier().ToString("0.0") + "x";
+    }
+
+    private void UpdateUpgradeButtons()
+    {
+        foreach(Upgrade upgrade in upgrades)
+        {
+            float levelUpCost = GetLevelUpCost(upgrade.GetUpgradeType());
+            bool canAffordUpgrade = player.CanAffordUpgrade(levelUpCost);
+            string costText = "";
+
+            if (levelUpCost != Mathf.Infinity)
+            {
+                costText = levelUpCost.ToString();
+            }
+            else
+            {
+                costText = "MAX";
+            }
+
+            upgrade.GetCostText().text = costText;
+            upgrade.GetUpgradeButton().GetButton().interactable = canAffordUpgrade;
+            upgrade.GetUpgradeButton().SetToActive(canAffordUpgrade);          
+        }
     }
 
     public UpgradeButton GetUpgradeButton(UpgradeType upgradeType)
     {
-        if (upgradeType == UpgradeType.Health)
-        {
-            return healthButton;
-        }
-        else if (upgradeType == UpgradeType.PointsMultiplier)
-        {
-            return shieldButton;
-        }
-        else if (upgradeType == UpgradeType.Shield)
-        {
-            return pointsButton;
-        }
+        Upgrade upgrade = GetUpgrade(upgradeType);
 
-        return null;
+        return upgrade.GetUpgradeButton();
     }
 
     private void UpdateLevelUI(int level, bool isDeathLevel)
@@ -150,15 +127,62 @@ public class UICanvas : MonoBehaviour
 
     private void MaxLevelCheck(UpgradeType upgradeType, bool isMaxLevel)
     {
-        if (!isMaxLevel) return;
+        if (!isMaxLevel || upgradeType == UpgradeType.Health) return;
 
         GetUpgradeButton(upgradeType).GetButton().interactable = false;
     }
 
     public IEnumerable<UpgradeButton> GetUpgradeButtons()
     {
-        yield return healthButton;
-        yield return shieldButton;
-        yield return pointsButton;
+        foreach(Upgrade upgrade in upgrades)
+        {
+            yield return upgrade.GetUpgradeButton();
+        }
+    }
+
+    private void DisableUpgradeButtons()
+    {
+        foreach (UpgradeButton upgradeButton in GetUpgradeButtons())
+        {
+            upgradeButton.GetButton().interactable = false;
+            upgradeButton.SetToActive(false);
+        }
+    }
+
+    public Upgrade GetUpgrade(UpgradeType upgradeType)
+    {
+        Upgrade upgrade = null;
+        foreach (Upgrade _upgrade in upgrades)
+        {
+            if (upgradeType == upgrade.GetUpgradeType())
+            {
+                upgrade = _upgrade;
+                break;
+            }
+        }
+
+        if (upgrade == null) print("Null");
+
+        return upgrade;
+    }
+
+    public float GetLevelUpCost(UpgradeType upgradeType)
+    {
+        float nextLevelCost = 0f;
+
+        if (upgradeType == UpgradeType.Health)
+        {
+            nextLevelCost = player.GetHealth().GetLevelUpCost();
+        }
+        if (upgradeType == UpgradeType.PointsMultiplier)
+        {
+            nextLevelCost = player.GetPoints().GetLevelUpCost();
+        }
+        if (upgradeType == UpgradeType.Shield)
+        {
+            nextLevelCost = player.GetShield().GetNextLevelCost();
+        }
+
+        return nextLevelCost;
     }
 }

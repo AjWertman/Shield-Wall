@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum UpgradeType { Health, Shield, PointsMultiplier}
-
 [RequireComponent(typeof(Button))]
 public class UpgradeButton : MonoBehaviour
 {

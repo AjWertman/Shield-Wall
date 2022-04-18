@@ -21,9 +21,10 @@ public class Health : MonoBehaviour
     private void Awake()
     {
         maxLevel = healthProgressions.Length - 1;
-        maxHealth = healthProgressions[0].GetMaxHealth();
+        currentLevel = 0;
+        maxHealth = healthProgressions[currentLevel].GetMaxHealth();
         castleHealth = maxHealth;
-        SetDamageRenderers(100);
+        SetDamageRenderers(0);
     }
 
     public void DamageHealth(float damageAmount)
@@ -36,7 +37,7 @@ public class Health : MonoBehaviour
 
         onHealthChange();
 
-        if (castleHealth == 0)
+        if (castleHealth <= 0)
         {
             isDead = true;
             onDeath();
@@ -49,7 +50,7 @@ public class Health : MonoBehaviour
 
         yield return new WaitForSeconds(.2f);
 
-        SetDamageRenderers(100);
+        SetDamageRenderers(0);
     }
 
     private void SetDamageRenderers(float fresnelPower)
@@ -70,12 +71,14 @@ public class Health : MonoBehaviour
 
     public void Upgrade()
     {
-        if (IsMaxLevel()) return;
-        currentLevel++;
+        if (!IsMaxLevel())
+        {
+            currentLevel++;
 
-        HealthProgression currentProgression = GetProgression(currentLevel);
-        
-        maxHealth = currentProgression.GetMaxHealth();
+            HealthProgression currentProgression = GetProgression(currentLevel);
+            maxHealth = currentProgression.GetMaxHealth();          
+        }
+
         castleHealth = maxHealth;
         onHealthChange();
     }
@@ -96,11 +99,11 @@ public class Health : MonoBehaviour
         return currentLevel == maxLevel;
     }
 
-    public float GetNextLevelCost()
+    public float GetLevelUpCost()
     {
         HealthProgression nextProgression = GetProgression(currentLevel);
 
-        return nextProgression.GetNextLevelCost();
+        return nextProgression.GetLevelUpCost();
     }
 
     public float GetHealth()
@@ -138,7 +141,7 @@ public class Health : MonoBehaviour
 public class HealthProgression
 {
     [SerializeField] int level = 0;
-    [SerializeField] float nextLevelCost = 100;
+    [SerializeField] float levelUpCost = 100;
 
     [SerializeField] float health = 100f;
 
@@ -147,9 +150,14 @@ public class HealthProgression
         return level;
     }
 
-    public float GetNextLevelCost()
+    public float GetLevelUpCost()
     {
-        return nextLevelCost;
+        return levelUpCost;
+    }
+
+    public void SetCost(float newCost)
+    {
+        levelUpCost = newCost;
     }
 
     public float GetMaxHealth()

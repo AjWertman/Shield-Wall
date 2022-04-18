@@ -23,8 +23,8 @@ Material:
   m_Name: NatureProjectile
   m_Shader: {fileID: -6465566751694194690, guid: a6b07a52212484b4d800072743c4315e,
     type: 3}
-  m_ShaderKeywords: _ENVIRONMENTREFLECTIONS_OFF _SPECULARHIGHLIGHTS_OFF
-  m_LightmapFlags: 4
+  m_ShaderKeywords: _EMISSION _ENVIRONMENTREFLECTIONS_OFF _SPECULARHIGHLIGHTS_OFF
+  m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -145,8 +145,8 @@ Material:
     - Vector3_B9EF5167: {r: 0.4, g: 1, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _GlowColor: {r: 5.992157, g: 0, b: 0, a: 1}
+    - _EmissionColor: {r: 40.376957, g: 0.16753925, b: 0.16753925, a: 1}
+    - _GlowColor: {r: 1024, g: 0, b: 0, a: 1}
     - _MeshColor: {r: 1, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999978, g: 0.19999978, b: 0.19999978, a: 0}
   m_BuildTextureStacks: []

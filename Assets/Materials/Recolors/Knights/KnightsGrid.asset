@@ -305,13 +305,13 @@ MonoBehaviour:
       y: 251.8457
       width: 85.76367
       height: 211.00586
-    mouseInsideRectPos: {x: -331, y: -556}
+    mouseInsideRectPos: {x: 560, y: 191}
     gridColor:
       serializedVersion: 2
       rgba: 4294967295
     gridLabel: Flat Color Grid
     editGridName: 0
-    isSelected: 0
+    isSelected: 1
     showGridOptions: 1
     isSelectionLocked: 0
     isHandleSelected: 0
@@ -529,7 +529,7 @@ MonoBehaviour:
   copyList: []
   texAtlas: {fileID: 2800000, guid: 370214d29559d094bbd95faa22ad92b7, type: 3}
   originTexAtlas: {fileID: 0}
-  originOffset: {x: 481, y: -144}
+  originOffset: {x: 544, y: 50}
   sizeOffset: {x: 185, y: 185}
   showShortcuts: 0
   zoomSpeed: 80
@@ -540,4 +540,4 @@ MonoBehaviour:
   showPanel: 1
   drawAxes: 1
   drawGrid: 1
-  texAtlasSize: {x: 0, y: 0}
+  texAtlasSize: {x: 512, y: 512}

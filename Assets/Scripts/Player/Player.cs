@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
 
     public void StartNewGame()
     {      
-        projectileSpawner.Restart();
+        projectileSpawner.Activate();
         health.Restart();
         shield.Restart();
         points.Restart();
@@ -58,8 +58,6 @@ public class Player : MonoBehaviour
     {
         shield.SetCanMove(false);
         projectileSpawner.DeathBehavior();
-        sfxManager.ActivateSounds(false);
-
         StartCoroutine(deathScreen.InitiateDeathSequence(points.GetPlayerPoints()));
     }
 
@@ -70,23 +68,26 @@ public class Player : MonoBehaviour
    
         if(upgradeType == UpgradeType.Health)
         {
-            pointCost = health.GetNextLevelCost();
+            pointCost = health.GetLevelUpCost();
             health.Upgrade();
-            isMaxLevel = health.IsMaxLevel();
-
         }
         else if (upgradeType == UpgradeType.PointsMultiplier)
         {
-            pointCost = points.GetNextLevelCost();
-            points.UpgradeMultiplier();
             isMaxLevel = points.IsMaxLevel();
-            
+            if (!isMaxLevel)
+            {
+                pointCost = points.GetLevelUpCost();
+                points.UpgradeMultiplier();
+            }
         }
         else if (upgradeType == UpgradeType.Shield)
         {
-            pointCost = shield.GetNextLevelCost();
-            shield.Upgrade();
-            isMaxLevel = shield.IsMaxLevel();         
+            isMaxLevel = shield.IsMaxLevel();
+            if (!isMaxLevel)
+            {
+                pointCost = shield.GetNextLevelCost();
+                shield.Upgrade();
+            }
         }
 
         points.SubtractPoints(pointCost);
@@ -94,24 +95,9 @@ public class Player : MonoBehaviour
         onUpgrade(upgradeType, isMaxLevel);
     }
 
-    public bool CanAffordUpgrade(UpgradeType upgradeType)
+    public bool CanAffordUpgrade(float pointsForNextUpgrade)
     {
         float currentPoints = points.GetPlayerPoints();
-        float pointsForNextUpgrade = Mathf.Infinity;
-
-        if (upgradeType == UpgradeType.Health)
-        {
-            pointsForNextUpgrade = health.GetNextLevelCost();
-        }
-        else if (upgradeType == UpgradeType.PointsMultiplier)
-        {
-            pointsForNextUpgrade = points.GetNextLevelCost();
-        }
-        else if (upgradeType == UpgradeType.Shield)
-        {
-            pointsForNextUpgrade = shield.GetNextLevelCost();
-        }
-
         bool canAfford = currentPoints > pointsForNextUpgrade;
 
         return canAfford;

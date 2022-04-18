@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7159225803566875969}
   - component: {fileID: 485737377462544693}
-  - component: {fileID: 8861562888827138418}
   m_Layer: 0
   m_Name: ProjectileSpawner
   m_TagString: Untagged
@@ -128,36 +127,3 @@ MonoBehaviour:
   timeBetweenProjectiles: 1.2
   secondsBetweenLevelUp: 30
   secondsUntilDeathMode: 360
---- !u!114 &8861562888827138418
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6084652322471230228}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebe8de9a51c12d5479540a25ea413dbc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  projectileSlots:
-  - projectileType: 0
-    amountToCreate: 10
-    projectilePrefab: {fileID: 7338595967596222809, guid: dbeb04c703290b34f8648079a1087c35,
-      type: 3}
-  - projectileType: 1
-    amountToCreate: 10
-    projectilePrefab: {fileID: 7338595967596222809, guid: a2863a715cf2c3d40ad05844118433ff,
-      type: 3}
-  - projectileType: 2
-    amountToCreate: 10
-    projectilePrefab: {fileID: 7338595967596222809, guid: c025250fa44be3547b774e3e81f32a3e,
-      type: 3}
-  - projectileType: 3
-    amountToCreate: 10
-    projectilePrefab: {fileID: 7891933029672319697, guid: 66742471423e7d74ba2b894d9a510db0,
-      type: 3}
-  - projectileType: 4
-    amountToCreate: 10
-    projectilePrefab: {fileID: 7891933029672319697, guid: ff36fe30e35d58b4a917cb3590ad9516,
-      type: 3}
